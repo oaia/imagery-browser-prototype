@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- OAIA Imagery Browser Prototype - released under the CC0 1.0 Universal licence -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="anonymous"/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+  <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster-src.js"></script>
+  <script src="https://rawcdn.githack.com/nextapps-de/spotlight/0.6.3/dist/spotlight.cdn.js"></script>
+</head>
+
+<body style="padding-top: 50px; ">
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+   <a class="navbar-brand" href="http://imagery.oaia.io/">
+    <img src="icon-oaia-100x100.png" width="30" height="30" alt="OAIA">
+   </a>
+   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+     <span class="navbar-toggler-icon"></span>
+   </button>
+   <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">OAIA Imagery Browser</a>
+        <div class="dropdown-menu" aria-labelledby="dropdown01">
+          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#helpModal"><strong>Help</strong> with Imagery Browser</a>
+          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#aboutModal"><strong>About</strong> the Imagery Browser</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="https://openaerialimagery.org/our-imagery/">Go to the <strong>OAIA Website</strong></a>
+        </div>
+      </li>
+    </ul>
+  </div>
+ </nav>
+
+<!-- MAP DIV -->
+
+<div id="map" style="width: 100vw; height: calc(100vh - 50px)">
+</div>
+
+<!-- HELP MODAL -->
+
+<div id="helpModal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">How to use the OAIA Imagery Browser</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Groups of OAIA photos are represented by orange, yellow or green circles indicating the number of images that are available.
+          Zoom in by scrolling or clicking on these groups.
+        </p>
+        <p>
+          When you have zoomed in far enough, an individual image will appear on the map (<img src="icon-photo-64x48.png" width="20" height="15">).
+          Hover over the image to see details about when the image was captured, and click to view the image.
+          Imagery locations are approximate.
+        </p>
+        <p><i><b>Coming soon</b></i>: A way to download images and full image sets...</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Dismiss</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT MODAL -->
+
+<div id="aboutModal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">About the OAIA Imagery Browser</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img src="icon-oaia-100x100.png" width="75" height="75" alt="OAIA" align="right">
+        <p>This is a very preliminary (beta) version version of the <strong>OAIA Imagery Browser</strong>. Our team is working toward developing this browser as a useful tool to browse, search, package, and download all of the imagery created by the <a href="https://openaerialimagery.org/" target="new">Open Aerial Imagery Association</a>.</p>
+        <p>
+          All Aerial Imagery is &copy; <a href="https://openaerialimagery.org/" target="new">Open Aerial Imagery Association</a> and is freely and openly available for use (and reuse!) under a <a href="https://creativecommons.org/" target="new">Creative Commons</a> <a href="https://creativecommons.org/licenses/by/4.0/" target="new">Attribution 4.0 International (CC BY 4.0)</a> licence.
+          The image (<img src="icon-photo-64x48.png" width="20" height="15">) icon on the map are free images provided by <a href="https://www.flaticon.com/" target="new">Flaticon</a>.
+        </p>
+        <p>
+           This browser was built using the <a href="https://leafletjs.com/" target="new">Leaflet</a> Javascript library with the <a href="https://github.com/Leaflet/Leaflet.markercluster" target="new">MarkerCluster</a> plugin, and makes use of <a href="https://getbootstrap.com/" target="new">Bootstrap</a>, <a href="https://jquery.com/" target="new">jQuery</a> and <a href="https://github.com/nextapps-de/spotlight" target="new">Spotlight</a>.
+           The underlying map data is &copy; <a href="https://www.openstreetmap.org/" target="new">OpenStreetMap</a> and its contributors.
+           Map data is served using <a href="https://mapbox.com/" target="new">Mapbox</a>.
+           It is hosted using <a href="https://aws.amazon.com" target="new">Amazon AWS</a> and some content is distributed by the <a href="https://unpkg.com/" target="new">UNPKG</a>, <a href="https://raw.githack.com/" target="new">raw.githack</a> and <a href="https://www.jsdelivr.com/">jsDelivr</a> CDNs.
+           The source code to this browser is also open; simply "<a href="view-source:http:index.html" target="new">View Source</a>".
+         </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Dismiss</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAP LEAFLET JS -->
+
+<script>
+    var markerIcon = L.icon({
+      iconUrl: 'icon-photo-64x48.png',
+      iconSize: [32, 24],
+      iconAnchor: [16, 12],
+      popupAnchor: [0, -15] });
+
+  	var oaiaMap = L.map('map').setView([51.04, -114.05], 7);
+
+    // using OAIA mapbox access token...
+  	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoib2FpYSIsImEiOiJja2dkemUxcDgwNWp5MnhuMDVhaGVjaWowIn0.a95Zqu-HcxH1p3fRtelJ6g', {
+  		maxZoom: 18,
+  		attribution: ' Aerial Imagery &copy; <a href="https://openaerialimagery.org/">Open Aerial Imagery Association</a> | Map Data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> and contributors | Basemap &copy; <a href="https://www.mapbox.com/">Mapbox</a> &middot; <a href="https://www.mapbox.com/map-feedback/#/-74.5/40/10">Improve this Basemap</a> ',
+  		id: 'oaia/ckgfohrj31s8419l9l1pg0pd5', // id: 'mapbox/streets-v11',  // oaia/ckgfohrj31s8419l9l1pg0pd5   // oaia/ckge046741ciz19pa2lxcqa3j
+  		tileSize: 512,
+  		zoomOffset: -1
+  	}).addTo(oaiaMap);
+
+    L.control.scale().addTo(oaiaMap);
+
+    // Function to create Image Set Leaflet markers within a Cluster Group...
+    function createImageMarkersAndClusterGroup(oaiaImageryDataArray)
+    {
+      var imageSetMarkers = L.markerClusterGroup();
+      function createImagerySetMapMarkers(value, index) {
+        var url = "https://oaia-imagery.s3.ca-central-1.amazonaws.com/" + oaiaImageryData[index].set + "/oaia/" + oaiaImageryData[index].file;
+        function markerOnClick(e) { Spotlight.show([{ title: 'Title', description: 'Description', src: url}], { index: 1, theme: "dark", autohide: false, control: ["autofit", "zoom"] }); };
+        var marker = L.marker([oaiaImageryData[index].lat, oaiaImageryData[index].lon], {icon: markerIcon}).on('click', markerOnClick);  //.addTo(oaiaMap)
+        marker.bindTooltip("Captured: <b>" + oaiaImageryData[index].dtg + "</b><br />Image Set: <b>" + oaiaImageryData[index].set + "</b><br />Approx. Location: <b>" + oaiaImageryData[index].lat + "</b>, <b>" + oaiaImageryData[index].lon + "</b>", {offset: [0,-10], direction: 'top'});
+        imageSetMarkers.addLayer(marker);
+      }
+      oaiaImageryDataArray.forEach(createImagerySetMapMarkers);
+      oaiaMap.addLayer(imageSetMarkers);
+    }
+</script>
+<!-- MANUAL LOAD OF THE IMAGERY SETS DATA - TODO: ASYNCHRONOUS LOADING WITH PROGRESS AND REPORT -->
+<script src="oaiaImageryData-CFXTI-20200416T2000Z.js" async></script> <!-- 53KB -->
+<script src="oaiaImageryData-CFXTI-20200517T1430Z.js" async></script> <!-- 62KB -->
+<script src="oaiaImageryData-CFXTI-20200711T1800Z.js" async></script> <!-- 390KB -->
+<script src="oaiaImageryData-CFXTI-20200810T1630Z.js" async></script> <!-- 635KB -->
+<script src="oaiaImageryData-CFXTI-20200812T1400Z.js" async></script> <!-- 651KB -->
+<script src="oaiaImageryData-CFXTI-20200813T1400Z.js" async></script> <!-- 251KB -->
+<script src="oaiaImageryData-CGVAL-20200910T0200Z.js" async></script> <!-- 21KB -->
+<script src="oaiaImageryData-CGVAL-20201003T2230Z.js" async></script> <!-- 195KB -->
+<script src="oaiaImageryData-CGVAL-20201009T1930Z.js" async></script> <!-- 417KB -->
+
+</body>
+</html>
